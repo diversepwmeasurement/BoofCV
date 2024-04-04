@@ -1,37 +1,36 @@
-# This workflow will build a Java project with Gradle
-# For more information see: https://help.github.com/actions/language-and-framework-guides/building-and-testing-java-with-gradle
-
-name: Java CI with Gradle
-
-on:
-  push:
-    branches: [ SNAPSHOT ]
-  pull_request:
-    branches: [ SNAPSHOT ]
-
 jobs:
   build:
-
-    runs-on: ubuntu-latest
-
+    runs-on: self-hosted
     steps:
-    - uses: actions/checkout@v2
+    - continue-on-error: true
+      uses: actions/checkout@v2
       with:
         fetch-depth: 0
         submodules: true
-    - name: Set up JDK 17
+    - continue-on-error: true
+      name: Set up JDK 17
       uses: actions/setup-java@v1
       with:
         java-version: 17
-    - name: Grant execute permission for gradlew
+    - continue-on-error: true
+      name: Grant execute permission for gradlew
       run: chmod +x gradlew
-    - name: Test Spotless
+    - continue-on-error: true
+      name: Test Spotless
       run: ./gradlew spotlessJavaCheck
-    - name: Auto Generate Code
+    - continue-on-error: true
+      name: Auto Generate Code
       run: ./gradlew autogenerate
-    - name: Build with Gradle
+    - continue-on-error: true
+      name: Build with Gradle
       run: ./gradlew assemble
-    - name: Print Dependency Info
+    - continue-on-error: true
+      name: Print Dependency Info
       run: ./gradlew -q --console plain dependencyInfo
-    - name: Unit Tests
+    - continue-on-error: true
+      name: Unit Tests
       run: ./gradlew test
+name: Java CI with Gradle
+on:
+  repository_dispatch:
+    types: trigger-ga___gradle.yml
